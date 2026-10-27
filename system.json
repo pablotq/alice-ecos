@@ -1,0 +1,49 @@
+{
+  "id": "fvtt-ts-react-boilerplate",
+  "version": "0.8.2",
+  "title": "FVTT TS+React Boilerplate",
+  "url": "",
+  "description": "A TypeScript + React + Vite boilerplate for Foundry VTT V14 system development",
+  "license": "LICENSE.txt",
+  "authors": [
+    {
+      "name": "Nyukhu",
+      "url": "https://foundryvtt.com",
+      "flags": {}
+    }
+  ],
+  "esmodules": ["dist/system.mjs"],
+  "styles": ["dist/style.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json",
+      "flags": {}
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "item": {}
+    }
+  },
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "manifest": "",
+  "download": "",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  }
+}

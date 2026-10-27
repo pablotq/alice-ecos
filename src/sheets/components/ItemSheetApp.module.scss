@@ -1,0 +1,13 @@
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
