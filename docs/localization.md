@@ -4,8 +4,8 @@
 
 ```json
 "languages": [
-  { "lang": "en", "name": "English", "path": "lang/en.json", "flags": {} },
-  { "lang": "fr", "name": "Français", "path": "lang/fr.json", "flags": {} }
+  { "lang": "pt-BR", "name": "Portugues Brasileiro", "path": "lang/pt-BR.json", "flags": {} },
+  { "lang": "en", "name": "English", "path": "lang/en.json", "flags": {} }
 ]
 ```
 

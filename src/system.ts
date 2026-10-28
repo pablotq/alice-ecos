@@ -1,3 +1,4 @@
+import { CardData } from "./data/card-data";
 import { CharacterData } from "./data/character-data";
 import { ItemData } from "./data/item-data";
 import { CharacterSheet } from "./sheets/character-sheet";
@@ -6,10 +7,11 @@ import { ItemSheet } from "./sheets/item-sheet";
 Hooks.once("init", () => {
   CONFIG.Actor.dataModels.character = CharacterData;
   CONFIG.Item.dataModels.item = ItemData;
+  CONFIG.Item.dataModels.carta = CardData;
 
   foundry.applications.apps.DocumentSheetConfig.registerSheet(
     Actor,
-    "fvtt-ts-react-boilerplate",
+    "ecos-de-alice",
     CharacterSheet,
     {
       types: ["character"],
@@ -18,11 +20,11 @@ Hooks.once("init", () => {
   );
   foundry.applications.apps.DocumentSheetConfig.registerSheet(
     Item,
-    "fvtt-ts-react-boilerplate",
+    "ecos-de-alice",
     ItemSheet,
     {
-      types: ["item"],
-      makeDefault: true
+      types: ["item", "carta"],
+      makeDefault: false
     }
   );
 });

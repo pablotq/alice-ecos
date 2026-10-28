@@ -4,7 +4,7 @@ import { ItemSheetApp } from "./components/ItemSheetApp";
 
 export class ItemSheet extends foundry.applications.sheets.ItemSheetV2 {
   static DEFAULT_OPTIONS = {
-    classes: ["fvtt-ts-react-boilerplate", "sheet", "item"],
+    classes: ["ecos-de-alice", "sheet", "item"],
     position: { width: 480, height: 360 }
   };
 

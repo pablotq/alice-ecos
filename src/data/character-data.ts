@@ -1,26 +1,144 @@
 function defineSchema() {
   const fields = foundry.data.fields;
+
   return {
-    biography: new fields.HTMLField({ initial: "" }),
+    alice: new fields.StringField({ 
+      required: true, 
+      nullable: false, 
+      initial: "" 
+    }),
+    vivencia: new fields.StringField({ 
+      required: true, 
+      nullable: false, 
+      initial: "" 
+    }),
     attributes: new fields.SchemaField({
-      strength: new fields.NumberField({
-        required: true,
-        nullable: false,
-        integer: true,
-        initial: 10
+      form: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 1, 
+        max: 4, 
+        initial: 1 
       }),
-      agility: new fields.NumberField({
-        required: true,
-        nullable: false,
-        integer: true,
-        initial: 10
+      logic: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 1, 
+        max: 4, 
+        initial: 1 
       }),
-      spirit: new fields.NumberField({
-        required: true,
-        nullable: false,
-        integer: true,
-        initial: 10
+      dream: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 1, 
+        max: 4, 
+        initial: 1 
       })
+    }),
+    suits: new fields.SchemaField({
+      form: new fields.StringField({
+        required: true,
+        nullable: false,
+        initial: "Copas",
+        choices: ["Copas", "Ouro", "Paus", "Espadas"]
+      }),
+      logic: new fields.StringField({
+        required: true,
+        nullable: false,
+        initial: "Ouro",
+        choices: ["Copas", "Ouro", "Paus", "Espadas"]
+      }),
+      dream: new fields.StringField({
+        required: true,
+        nullable: false,
+        initial: "Paus",
+        choices: ["Copas", "Ouro", "Paus", "Espadas"]
+      })
+    }),
+    integrity: new fields.SchemaField({
+      form: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 0, 
+        max: 3, 
+        initial: 0 
+      }),
+      logic: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 0, 
+        max: 3, 
+        initial: 0 
+      }),
+      dream: new fields.NumberField({ 
+        required: true, 
+        nullable: false, 
+        integer: true, 
+        min: 0, 
+        max: 3, 
+        initial: 0 
+      })
+    }),
+    cards: new fields.ArrayField(
+      new fields.SchemaField({
+        id: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: ""
+        }),
+        uuid: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: ""
+        }),
+        name: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: ""
+        }),
+        suit: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: "Copas",
+          choices: ["Copas", "Ouro", "Paus", "Espadas"]
+        }),
+        category: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: "Forma",
+          choices: ["Forma", "Mente", "Devaneio", "Defeito"]
+        }),
+        slot: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: "forma",
+          choices: ["forma", "mente", "devaneio", "defeito"]
+        }),
+        description: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: ""
+        }),
+        effect: new fields.StringField({
+          required: true, 
+          nullable: false,
+          initial: ""
+        }),
+      }),
+      {
+        required: true,
+        initial: []
+      }
+    ),
+    notes: new fields.StringField({ 
+      required: true, 
+      nullable: false, 
+      initial: "" 
     })
   };
 }

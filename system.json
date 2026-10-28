@@ -1,13 +1,13 @@
 {
-  "id": "fvtt-ts-react-boilerplate",
-  "version": "0.8.2",
-  "title": "FVTT TS+React Boilerplate",
+  "id": "ecos-de-alice",
+  "version": "0.1",
+  "title": "Ecos de Alice",
   "url": "",
-  "description": "A TypeScript + React + Vite boilerplate for Foundry VTT V14 system development",
+  "description": "Um sistema de RPG brasileiro baseado no universo de Alice no País das Maravilhas.",
   "license": "LICENSE.txt",
   "authors": [
     {
-      "name": "Nyukhu",
+      "name": "pablotq",
       "url": "https://foundryvtt.com",
       "flags": {}
     }
@@ -16,15 +16,15 @@
   "styles": ["dist/style.css"],
   "languages": [
     {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json",
+      "lang": "pt-BR",
+      "name": "Português do Brasil",
+      "path": "lang/pt-BR.json",
       "flags": {}
     },
     {
-      "lang": "fr",
-      "name": "Français",
-      "path": "lang/fr.json",
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
       "flags": {}
     }
   ],
@@ -33,7 +33,8 @@
       "character": {}
     },
     "Item": {
-      "item": {}
+      "item": {},
+      "carta": {}
     }
   },
   "compatibility": {
