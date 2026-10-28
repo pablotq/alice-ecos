@@ -1,0 +1,58 @@
+[
+  {
+    "_id": "carta-adaptacao-selvagem",
+    "name": "Adaptação Selvagem",
+    "type": "carta",
+    "img": "",
+    "system": {
+      "suit": "Paus",
+      "category": "Forma",
+      "slot": "forma",
+      "description": "Você é instintivo e se adapta ao ambiente em movimento.",
+      "effect": "Ganha +1 dado para se mover em terrenos ruins (lama, escuro, chuva ou espinhos).",
+      "notes": "Carta de atributo Forma."
+    }
+  },
+  {
+    "_id": "carta-leitura-de-alma",
+    "name": "Leitura de Alma",
+    "type": "carta",
+    "img": "",
+    "system": {
+      "suit": "Copas",
+      "category": "Mente",
+      "slot": "mente",
+      "description": "Você sabe instintivamente a emoção dominante e a intenção de qualquer criatura.",
+      "effect": "O Narrador nunca pode esconder o 'humor' de um NPC de você.",
+      "notes": "Carta de atributo Mente."
+    }
+  },
+  {
+    "_id": "carta-sonho-do-abismo",
+    "name": "Sonho do Abismo",
+    "type": "carta",
+    "img": "",
+    "system": {
+      "suit": "Espadas",
+      "category": "Devaneio",
+      "slot": "devaneio",
+      "description": "Sua mente toca um silêncio imaginário que revela o fundo da realidade.",
+      "effect": "Você pode transformar uma falha em uma resposta útil, se aceitar um custo emocional.",
+      "notes": "Carta de atributo Devaneio."
+    }
+  },
+  {
+    "_id": "carta-inercia-pesada",
+    "name": "Inércia Pesada",
+    "type": "carta",
+    "img": "",
+    "system": {
+      "suit": "Ouro",
+      "category": "Defeito",
+      "slot": "defeito",
+      "description": "O peso da realidade parece grudado em você.",
+      "effect": "Você sempre age por último na rodada e falha automaticamente em testes de Natação.",
+      "notes": "Carta de Defeito."
+    }
+  }
+]
