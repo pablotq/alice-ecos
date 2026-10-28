@@ -5,6 +5,9 @@ import { ItemSheetApp } from "./components/ItemSheetApp";
 export class ItemSheet extends foundry.applications.sheets.ItemSheetV2 {
   static DEFAULT_OPTIONS = {
     classes: ["ecos-de-alice", "sheet", "item"],
+    window: {
+      resizable: true
+    },
     position: { width: 480, height: 360 }
   };
 

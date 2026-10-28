@@ -7,6 +7,9 @@ import { CardSlot } from "../types/cardSlot";
 export class CharacterSheet extends foundry.applications.sheets.ActorSheetV2 {
   static DEFAULT_OPTIONS = {
     classes: ["ecos-de-alice", "sheet", "actor"],
+    window: {
+      resizable: true
+    },
     position: { width: 700, height: 520 }
   };
 
