@@ -46,5 +46,14 @@
   "grid": {
     "distance": 5,
     "units": "ft"
-  }
+  },
+  "packs": [
+    {
+      "name": "cartas-ecos-de-alice",
+      "label": "Cartas de ECOs de Alice",
+      "path": "packs/cartas-ecos-de-alice.json",
+      "type": "Item",
+      "system": "ecos-de-alice"
+    }
+  ]
 }
