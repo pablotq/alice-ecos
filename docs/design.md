@@ -1,560 +1,316 @@
-# 🏰 DESIGN SPECIFICATION: FICHA DE PERSONAGEM (FOUNDRY VTT)
-## **Ecos de Alice — Sistema de RPG**
+# 🃏 DESIGN SPECIFICATION: FICHA "DECK DE CARTAS" & WONDERLAND CHAOS
+
+## Ecos de Alice — Actor Sheet para Foundry VTT (React + SCSS)
 
 ---
 
-## 📑 1. VISÃO GERAL DE DESIGN & DIRETRICEM VISUAL
+## 1. CONCEITO E DIREÇÃO ARTÍSTICA
 
-A ficha foi desenvolvida sob a estética **Vitoriana Dark Chaos**. O design contrapõe o rigor enlatado e elegante do século XIX vitoriano com a distorção vibrante e perigosa do País das Maravilhas (*Wonderland*).
+O design da ficha foi pensado como uma mesa caótica de cartas flutuantes, com elementos lúdicos e surreais espalhados pela interface. A ideia é criar uma sensação de "baralho vivo" no universo de Alice, sem perder legibilidade e organização da ficha de personagem.
 
-### 🎨 Paleta de Cores (Theme Tokens)
+A estética mistura:
+- papel de carta / pergaminho antigo
+- vibração surreal de Wonderland
+- visual de jogo de tabela com contraste forte
+- cor e naipe como linguagem visual principal
+- elementos decorativos suaves, mas marcantes, em estilo doodle pop art
 
-| Elemento | Cor Hex / CSS | Conceito Visual |
-| :--- | :--- | :--- |
-| **Fundo Principal** | `#121114` (Obsidiana Profunda) | Textura de couro escuro envernizado. |
-| **Painéis Internos** | `#1a181e` (Carvão Vitoriano) | Superfície de madeira/papel escuro. |
-| **Bordas & Molduras**| `#c5a059` (Ouro Envelhecido) | Filigrana vitoriana elegante. |
-| **Texto Primário** | `#e6e1d6` (Pergaminho Claro) | Leitura limpa e alto contraste. |
-| **Texto Secundário**| `#a39b8b` (Cinza Névoa) | Descrições e rótulos auxiliares. |
-| **Naipe: Copas (♥)** | `#ff2a55` (Crimson Pulsante) | Sangue, emoção e fluxo. |
-| **Naipe: Ouros (♦)** | `#ffb700` (Âmbar Reluzente) | Peso, ouro, integridade física. |
-| **Naipe: Paus (♣)**  | `#00e676` (Verde Esmeralda Caótico) | Instinto, mato e mutação. |
-| **Naipe: Espadas (♠)**| `#00b0ff` (Azul Lâmina Elétrico) | Verdade afiada, corte e ceticismo. |
-| **Dano/Integridade** | `#d50000` / `#2a080c` | Caixas marcadas / Caixas ativas. |
+### Elementos temáticos
+- Cartas gigantes e máscaras de naipe
+- Relógios de bolso, chaves, cogumelos e cartas de baralho
+- Textura de fundo em padrão repetitivo
+- Doodles vibrantes em posições aleatórias
+- Toques neon no tema escuro
 
 ---
 
-## 📐 2. ARQUITETURA DE LAYOUT (FOUNDRY VTT)
+## 2. PALETA DE CORES E TEMAS
 
+### Tema claro (Pergaminho caótico / ilustrado)
+
+Base visual:
+- Fundo principal: #f5f0e6
+- Fundo profundo: #e2d7c5
+- Cartas: #fffaf1
+- Bordas: #3a2d27
+- Texto principal: #2b1e18
+- Texto secundário: #6b5c54
+
+Acentos:
+- Form: #00c985
+- Logic: #ff3d6d
+- Dream: #f4b942
+- Defect: #8a5cf6
+
+### Tema escuro (Neon chaos / Wonderland noturno)
+
+Base visual:
+- Fundo principal: #0a0812
+- Fundo profundo: #120c1c
+- Cartas: #14101f
+- Bordas: #9d4edd
+- Texto principal: #f1faee
+- Texto secundário: #a0a0b2
+
+Acentos:
+- Form: #00ff88
+- Logic: #ff2a55
+- Dream: #ffd700
+- Defect: #9d4edd
+
+### Naipes e uso visual
+- Copas: #d62828
+- Ouro: #d4af37
+- Paus: #2a9d8f
+- Espadas: #457b9d
+
+Esses valores são usados em:
+- cartão do atributo
+- badge do naipe
+- borda dos slots
+- rolagem e resultados no chat
+- carta de defeito
+- botões e destaques visuais
+
+---
+
+## 3. ESTRUTURA DA FICHA
+
+A ficha principal é composta por 4 blocos principais:
+
+1. Header da ficha
+2. Identidade do personagem
+3. Grid de atributos
+4. Defeito / cartas / notas
+
+### 3.1 Header
+No topo da ficha, o usuário encontra:
+- título principal: Alice: E.C.O.S
+- botão de tema único no lado direito
+- identidade visual forte e clara
+
+A estrutura do header é pensada para manter equilíbrio visual e não competir com o conteúdo principal.
+
+### 3.2 Identidade do personagem
+A ficha inclui:
+- nome do personagem
+- vivência / conceito
+- ponto de status e métricas principais
+- organização em blocos legíveis, sem poluição visual
+
+### 3.3 Grid de atributos
+Os atributos principais são renderizados em 3 colunas:
+- Forma
+- Lógica
+- Devaneio
+
+Cada cartão de atributo contém:
+- nome do atributo
+- valor numérico
+- ícone / marca do naipe
+- select para naipe
+- integridade
+- botão de rolagem
+- área para cartas relacionadas ao slot
+
+### 3.4 Carta de defeito
+A carta de defeito é tratada como um bloco separado, mas visualmente conectado ao sistema principal. Ela acompanha o naipe da carta de defeito atribuída ao personagem.
+
+Regras visuais:
+- se houver carta de defeito na ficha, o naipe do defeito deve refletir essa carta
+- se não houver, usar fallback do sistema
+- o ícone do defeito e a borda devem obedecer à paleta do naipe
+
+---
+
+## 4. RACIONAL DE DESIGN DOS SLOTS
+
+Os slots seguem a organização de cartas do sistema:
+- form
+- logic
+- dream
+- defect
+
+Isso garante que cada carta esteja em seu contexto correto e o layout siga a lógica da ficha.
+
+Cada slot precisa manter:
+- associação com o atributo correspondente
+- identidade visual por cor
+- comportamento consistente de drag/drop
+- borda e destaque visuais próprios
+
+---
+
+## 5. PALAVRA-CHAVE: DECK DE CARTAS
+
+A interface foi desenhada como se a ficha fosse uma mesa de jogo invisível:
+- cada atributo é uma carta destacada
+- cada slot é um espaço de uso
+- cada resultado de rolagem se parece com um cartão de jogo
+- o visual visualiza a lógica do RPG como uma experiência tátil, dinâmica e teatral
+
+A intenção é que o jogador sinta que está lidando com uma ficha viva, com peças e resultados que parecem fazer parte de um baralho encantado.
+
+---
+
+## 6. DOODLES E ELEMENTOS DECORATIVOS
+
+Os doodles são fundamentais para dar personalidade ao sistema. Eles aparecem como elementos de fundo e não devem atrapalhar a leitura.
+
+### Paleta de doodles do tema claro
+- #ff7b54
+- #1ec8a5
+- #a855f7
+- #ff3b5c
+- #1f6feb
+
+### Paleta de doodles do tema escuro
+- mantém a mesma lógica, mas com brilho neon e alto contraste
+- sem mexer na lógica do tema escuro
+
+Esses elementos aparecem em:
+- fundo da ficha
+- cantos e bordas
+- áreas vazias e margens
+- pequenos detalhes em blocos decorativos
+
+A ideia é que o caos visual pareça intencional, não aleatório.
+
+---
+
+## 7. ARQUITETURA DE COMPONENTES
+
+Os arquivos principais do sistema visual são:
+
+- [src/sheets/components/CharacterSheetApp.tsx](../src/sheets/components/CharacterSheetApp.tsx)
+- [src/sheets/components/CardGrid.tsx](../src/sheets/components/CardGrid.tsx)
+- [src/sheets/components/CharacterRoll.tsx](../src/sheets/components/CharacterRoll.tsx)
+- [src/sheets/components/ModalRoll.tsx](../src/sheets/components/ModalRoll.tsx)
+- [src/styles/CharacterSheetApp.module.scss](../src/styles/CharacterSheetApp.module.scss)
+- [src/styles/CharacterRoll.scss](../src/styles/CharacterRoll.scss)
+- [src/styles/variables.scss](../src/styles/variables.scss)
+
+### Hierarquia visual recomendada
+
+1. Contêiner principal da ficha
+2. Header com título e toggle de tema
+3. Bloco de dados do personagem
+4. Grid principal de atributos
+5. Defeito e cartas anexadas
+6. Área de notas / chat
+7. Elementos decorativos em background
+
+---
+
+## 8. THEME TOGGLE E COMPORTAMENTO
+
+O tema é controlado no componente principal com useState e uma função de alternância:
+
+```tsx
+const [theme, setTheme] = useState<"light" | "dark">("light");
+
+const toggleTheme = () => {
+  setTheme((prev) => (prev === "light" ? "dark" : "light"));
+};
+
+return (
+  <div className={styles.sheet} data-theme={theme}>
+    <div className={styles.headerContainer}>
+      <h1>Alice: E.C.O.S</h1>
+      <button type="button" className={styles.themeToggle} onClick={toggleTheme}>
+        {theme === "light" ? "🌙 Tema Escuro" : "☀️ Tema Claro"}
+      </button>
+    </div>
+  </div>
+);
 ```
-+-----------------------------------------------------------------------+
-| 👑 CABEÇALHO IMUTÁVEL (Sempre Visível)                                |
-| [ Retrato ]  NOME DO PERSONAGEM (Input Titulado)                      |
-|              VIVÊNCIA: [ Ex: Governanta Vitoriana (+2 em Etiqueta) ]   |
-|              DEFEITO GERAL: [ Ex: Fragilidade do Ego ]                |
-+-----------------------------------------------------------------------+
-| [ Aba 1: Diário de Campo (Atributos) ] | [ Aba 2: Inventário & Notas ]|
-+-----------------------------------------------------------------------+
-|                                                                       |
-|  (CONTEÚDO DA ABA ATIVA EXIBIDO ABAIXO)                               |
-|                                                                       |
-+-----------------------------------------------------------------------+
-```
+
+### Regras do tema
+- o botão fica no lado direito do header
+- há apenas um botão de alternância
+- o tema acompanha o data-theme do contêiner principal
+- o comportamento deve ser reativo e instantâneo
 
 ---
 
-## 📜 3. ESTRUTURA E CÓDIGO TEMPLATE (HTML / CSS EMBUTIDO)
+## 9. COMPORTAMENTO VISUAL DOS RESULTADOS DE ROLAGEM
 
-Abaixo está o código de interface responsivo, pronto para uso em **Actor Sheets** do Foundry VTT utilizando Handlebars ou HTML puro estilizado com CSS Grid e Flexbox.
+O componente de rolagem no chat não é apenas texto. Ele precisa funcionar como um cartão de jogo ampliado.
 
-```html:Ecos de Alice - Layout da Ficha:ecos_alice_sheet.html
-<style>
-  /* --- PALETA E VARIÁVEIS CSS --- */
-  :root {
-    --bg-dark: #121114;
-    --bg-panel: #1a181e;
-    --bg-card: #232029;
-    --border-gold: #c5a059;
-    --border-subtle: #342f3d;
-    --text-main: #e6e1d6;
-    --text-muted: #a39b8b;
-    
-    /* Naipes Chamativos */
-    --copas-color: #ff2a55;
-    --ouros-color: #ffb700;
-    --paus-color: #00e676;
-    --espadas-color: #00b0ff;
-    --damage-red: #d50000;
-  }
+### Requisitos visuais
+- a caixa do resultado deve ter um destaque por atributo
+- o naipe do dado ou do atributo deve refletir a cor correta
+- o total da rolagem precisa ser destacado em destaque final
+- a tag de resultado deve aparecer no final do bloco, após o total
+- os detalhes da rolagem ficam escondidos por padrão e abrem ao clicar
 
-  .alice-sheet {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: 'Georgia', 'Times New Roman', serif;
-    padding: 16px;
-    border: 2px solid var(--border-gold);
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-    max-width: 900px;
-    margin: 0 auto;
-  }
+### Exemplo de hierarquia
+- card principal
+- header com naipe e atributo
+- dados coloridos por resultado
+- total principal
+- tag de resultado com fonte maior e destaque final
+- bloco de detalhes expansível
 
-  /* --- CABEÇALHO IMUTÁVEL --- */
-  .alice-header {
-    display: flex;
-    gap: 16px;
-    background: var(--bg-panel);
-    border: 1px solid var(--border-gold);
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 16px;
-    align-items: center;
-  }
+---
 
-  .header-portrait {
-    width: 80px;
-    height: 80px;
-    border: 2px solid var(--border-gold);
-    border-radius: 4px;
-    object-fit: cover;
-    background: #000;
-  }
+## 10. CATEGORIAS DE RESULTADO
 
-  .header-fields {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+As categorias visuais da rolagem seguem a lógica do sistema:
+- sucesso limpo
+- sucesso custoso
+- falha
+- crítica
 
-  .header-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+A cor do resultado deve obedecer à paleta do sistema, mantendo consistência com o visual da ficha.
 
-  .header-row label {
-    font-weight: bold;
-    color: var(--border-gold);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    min-width: 100px;
-  }
+---
 
-  .header-row input {
-    flex-grow: 1;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-main);
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 0.95rem;
-  }
+## 11. CONSIDERAÇÕES DE IMPLEMENTAÇÃO VISUAL
 
-  .header-row input.char-name {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: var(--border-gold);
-    border-color: var(--border-gold);
-  }
+### 11.1 CSS Modules e HTML dinâmico
+Como parte da rolagem é gerada como HTML dinâmico em Foundry, o CSS de chat precisa ser construído com atenção. O sistema atual usa global styling em alguns pontos para garantir que o HTML injetado pelo Foundry receba os estilos corretamente.
 
-  /* --- NAVEGAÇÃO POR ABAS --- */
-  .alice-tabs {
-    display: flex;
-    gap: 4px;
-    border-bottom: 2px solid var(--border-gold);
-    margin-bottom: 16px;
-  }
+### 11.2 Usar tokens, não valores soltos
+Todos os estilos devem se basear em variáveis compartilhadas em [src/styles/variables.scss](../src/styles/variables.scss), para evitar inconsistência entre:
+- ficha
+- chat
+- modal
+- defeito
+- grid de cartas
 
-  .tab-btn {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-subtle);
-    border-bottom: none;
-    color: var(--text-muted);
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: inherit;
-    border-radius: 6px 6px 0 0;
-    transition: all 0.2s ease;
-  }
+### 11.3 Manter identidade visual consistente
+As cores dos atributos, naipes e defeitos devem ser as mesmas em toda a aplicação. Isso reduz ruído visual e reforça a coerência do sistema.
 
-  .tab-btn:hover, .tab-btn.active {
-    background: var(--border-gold);
-    color: var(--bg-dark);
-  }
+---
 
-  /* --- ABA 1: DIÁRIO DE CAMPO (3 COLUNAS) --- */
-  .grid-3col {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
+## 12. DIREÇÃO VISUAL FINAL
 
-  .attribute-column {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: relative;
-    overflow: hidden;
-  }
+A direção final do sistema é:
+- ficha de personagem como mesa de cartas viva
+- mistura de papel, fantasia e caos lúdico
+- alta legibilidade sem perder personalidade
+- uso central de naipes como linguagem visual
+- rolagens com destaque e presença de jogo
+- tema claro e escuro bem definidos e coerentes
+- visual que remete ao universo de Alice sem depender de assets externos pesados
 
-  /* Cores Temáticas das Colunas por Naipe */
-  .attribute-column.copas { border-top: 4px solid var(--copas-color); }
-  .attribute-column.ouros { border-top: 4px solid var(--ouros-color); }
-  .attribute-column.paus   { border-top: 4px solid var(--paus-color); }
-  .attribute-column.espadas{ border-top: 4px solid var(--espadas-color); }
+A identidade de ECOs de Alice é preservada por meio de:
+- contraste e brilho
+- cartas como elemento principal
+- paleta vibrante e teatral
+- layout de ficha funcional e visualmente marcante
 
-  .column-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 8px;
-  }
+---
 
-  .suit-icon {
-    font-size: 2rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 6px currentColor);
-  }
-  .copas .suit-icon { color: var(--copas-color); }
-  .ouros .suit-icon { color: var(--ouros-color); }
-  .paus .suit-icon   { color: var(--paus-color); }
-  .espadas .suit-icon{ color: var(--espadas-color); }
+## 13. RESUMO FINAL
 
-  .attr-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
+O sistema visual atual combina:
+- estética de carta, pergaminho e caos de Wonderland
+- paleta vibrante com tema claro e escuro
+- grid de atributos com consistência e leitura forte
+- cartas e slots organizados por lógica de jogo
+- rolagens visualmente destacadas e com comportamento interativo
+- design preparado para expansão sem quebrar a coerência visual
 
-  .attr-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    width: 40px;
-    height: 40px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Assinaturas & Passivas */
-  .signature-box {
-    background: var(--bg-dark);
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    border-left: 3px solid var(--border-gold);
-  }
-  .signature-box strong {
-    color: var(--text-main);
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  /* Trilha de Integridade (Caixas de Dano) */
-  .integrity-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .integrity-title {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-  }
-
-  .integrity-boxes {
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
-  }
-
-  .checkbox-custom {
-    flex: 1;
-    height: 28px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: transparent;
-    transition: all 0.2s;
-  }
-
-  .checkbox-custom.checked {
-    background: var(--damage-red);
-    border-color: #ff5252;
-    color: #fff;
-    box-shadow: 0 0 8px rgba(213, 0, 0, 0.6);
-  }
-
-  /* Dropzone de Conceitos (Poderes/Cartas Arrastáveis) */
-  .concepts-dropzone {
-    flex-grow: 1;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px dashed var(--border-subtle);
-    border-radius: 4px;
-    padding: 8px;
-    min-height: 150px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .concept-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: grab;
-  }
-
-  .concept-item:hover {
-    border-color: var(--border-gold);
-  }
-
-  /* --- ABA 2: INVENTÁRIO & NOTAS --- */
-  .grid-2row {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .section-panel {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    padding: 12px;
-  }
-
-  .section-title {
-    font-size: 1rem;
-    color: var(--border-gold);
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 6px;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 8px;
-  }
-
-  .inventory-item {
-    background: var(--bg-dark);
-    border: 1px solid var(--border-subtle);
-    padding: 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-  }
-
-  .notes-editor {
-    width: 100%;
-    min-height: 180px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-main);
-    padding: 10px;
-    border-radius: 4px;
-    font-family: inherit;
-    resize: vertical;
-  }
-</style>
-
-<div class="alice-sheet">
-  
-  <!-- 👑 CABEÇALHO IMUTÁVEL -->
-  <header class="alice-header">
-    <img class="header-portrait" src="icons/svg/mystery-man.svg" alt="Retrato do Personagem" />
-    <div class="header-fields">
-      <div class="header-row">
-        <label>Nome</label>
-        <input type="text" class="char-name" value="Srtª. Agatha Primrose" placeholder="Nome da Alice..." />
-      </div>
-      <div class="header-row">
-        <label>Vivência</label>
-        <input type="text" value="Governanta Vitoriana (+2 em Etiqueta/Educação)" placeholder="Profissão ou passado no Mundo Real..." />
-      </div>
-      <div class="header-row">
-        <label>Defeito Geral</label>
-        <input type="text" value="Fragilidade do Ego (Falha Crítica causa dano duplo)" placeholder="Compulsão ou fraqueza ativa..." />
-      </div>
-    </div>
-  </header>
-
-  <!-- 📑 SISTEMA DE ABAS -->
-  <nav class="alice-tabs">
-    <button class="tab-btn active" onclick="switchTab('tab-atributos')">DIÁRIO DE CAMPO (ATRIBUTOS)</button>
-    <button class="tab-btn" onclick="switchTab('tab-inventario')">INVENTÁRIO & NOTAS</button>
-  </nav>
-
-  <!-- 🎴 ABA 1: DIÁRIO DE CAMPO (3 COLUNAS DE ATRIBUTOS) -->
-  <main id="tab-atributos" class="tab-content">
-    <div class="grid-3col">
-      
-      <!-- COLUNA 1: FORMA -->
-      <div class="attribute-column paus">
-        <div class="column-header">
-          <div>
-            <span class="attr-title">FORMA</span>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Eu Físico</div>
-          </div>
-          <span class="suit-icon">♣</span>
-          <div class="attr-value">3</div>
-        </div>
-
-        <div class="signature-box">
-          <strong>Adaptação Selvagem</strong>
-          +1 dado extra para se mover em terrenos ruins (lama, escuro, espinhos).
-        </div>
-
-        <div class="integrity-section">
-          <span class="integrity-title">Integridade (Dano: -1d cada)</span>
-          <div class="integrity-boxes">
-            <div class="checkbox-custom">[ ]</div>
-            <div class="checkbox-custom">[ ]</div>
-            <div class="checkbox-custom">[ ]</div>
-          </div>
-        </div>
-
-        <div class="concepts-dropzone">
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">CONCEITOS (ARRASTE AQUI):</div>
-          <div class="concept-item">
-            <span>🎴 2 de Paus: Agilidade</span>
-            <strong>+1</strong>
-          </div>
-          <div class="concept-item">
-            <span>🎴 Valete de Paus: Flexibilidade</span>
-            <strong>+1</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- COLUNA 2: LÓGICA -->
-      <div class="attribute-column ouros">
-        <div class="column-header">
-          <div>
-            <span class="attr-title">LÓGICA</span>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Eu Racional</div>
-          </div>
-          <span class="suit-icon">♦</span>
-          <div class="attr-value">2</div>
-        </div>
-
-        <div class="signature-box">
-          <strong>Lei da Posse</strong>
-          1x por sessão, pode declarar que tem um item pequeno no bolso.
-        </div>
-
-        <div class="integrity-section">
-          <span class="integrity-title">Integridade (Dano: -1d cada)</span>
-          <div class="integrity-boxes">
-            <div class="checkbox-custom checked">X</div>
-            <div class="checkbox-custom">[ ]</div>
-            <div class="checkbox-custom">[ ]</div>
-          </div>
-        </div>
-
-        <div class="concepts-dropzone">
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">CONCEITOS (ARRASTE AQUI):</div>
-          <div class="concept-item">
-            <span>🎴 10 de Ouros: Hierarquia</span>
-            <strong>+1</strong>
-          </div>
-          <div class="concept-item">
-            <span>🎴 4 de Ouros: Regulamento</span>
-            <strong>+1</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- COLUNA 3: DEVANEIO -->
-      <div class="attribute-column espadas">
-        <div class="column-header">
-          <div>
-            <span class="attr-title">DEVANEIO</span>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Eu Mágico</div>
-          </div>
-          <span class="suit-icon">♠</span>
-          <div class="attr-value">1</div>
-        </div>
-
-        <div class="signature-box">
-          <strong>Fragilidade do Ego (Defeito)</strong>
-          Falha Crítica (Olhos de Cheshire) causa o Dobro de Dano.
-        </div>
-
-        <div class="integrity-section">
-          <span class="integrity-title">Integridade (Dano: -1d cada)</span>
-          <div class="integrity-boxes">
-            <div class="checkbox-custom">[ ]</div>
-            <div class="checkbox-custom">[ ]</div>
-            <div class="checkbox-custom">[ ]</div>
-          </div>
-        </div>
-
-        <div class="concepts-dropzone">
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">CONCEITOS (ARRASTE AQUI):</div>
-          <div class="concept-item">
-            <span>🎴 7 de Espadas: Língua Afiada</span>
-            <strong>+1</strong>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- 🎒 ABA 2: INVENTÁRIO & NOTAS -->
-  <main id="tab-inventario" class="tab-content" style="display: none;">
-    <div class="grid-2row">
-      
-      <!-- POSSES E ITENS -->
-      <div class="section-panel">
-        <div class="section-title">📦 Posses & Itens de Wonderland</div>
-        <div class="inventory-grid">
-          <div class="inventory-item">
-            <span>🍾</span>
-            <div>
-              <strong>Garrafa "Beba-me"</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Encolhe o usuário.</div>
-            </div>
-          </div>
-          <div class="inventory-item">
-            <span>🔑</span>
-            <div>
-              <strong>Chave Dourada Minúscula</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Abre a porta do Jardim.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NOTAS DO DIÁRIO -->
-      <div class="section-panel">
-        <div class="section-title">✍️ Diário de Bordo & Registros do Coelho</div>
-        <textarea class="notes-editor" placeholder="Escreva aqui suas pistas, anotações de sessão, estado do Relógio do Espelho ou contadores de Tensão..."></textarea>
-      </div>
-
-    </div>
-  </main>
-
-</div>
-
-<script>
-  function switchTab(tabId) {
-    document.getElementById('tab-atributos').style.display = 'none';
-    document.getElementById('tab-inventario').style.display = 'none';
-    
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById(tabId).style.display = 'block';
-    event.currentTarget.classList.add('active');
-  }
-</script>
+Esse design representa a identidade atual do projeto e deve ser mantido como guia visual principal para todas as novas telas, componentes e refinamentos de UI.
