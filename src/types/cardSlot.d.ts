@@ -1,1 +1,1 @@
-export type CardSlot = "forma" | "mente" | "devaneio" | "defeito";
+export type CardSlot = "form" | "logic" | "dream" | "defect";
