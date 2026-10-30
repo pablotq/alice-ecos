@@ -1,0 +1,254 @@
+@use "./variables";
+
+.chat-message:has(.character-roll-card) .dice-roll,
+.chat-message:has(.character-roll-card) .dice-formula {
+  display: none;
+}
+
+.character-roll-card {
+  --card-color: var(--suit-espadas);
+  --outcome-color: var(--color-form);
+  --card-bg: #0a1726;
+  --card-border: var(--suit-espadas);
+  --card-glow: rgba(61, 90, 128, 0.4);
+  --suit-color: var(--card-color);
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent), var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 18px;
+  padding: 0.7rem 0.8rem 0.75rem;
+  box-shadow: 0 0 18px var(--card-glow);
+  color: #f4f1ea;
+  font-family: var(--font-display);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.character-roll-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.character-roll-card[data-attr="form"] {
+  --card-color: var(--suit-copas);
+  --card-border: var(--suit-copas);
+  --card-glow: rgba(193, 18, 31, 0.38);
+}
+
+.character-roll-card[data-attr="logic"] {
+  --card-color: var(--suit-ouros);
+  --card-border: var(--suit-ouros);
+  --card-glow: rgba(201, 162, 39, 0.42);
+}
+
+.character-roll-card[data-attr="dream"] {
+  --card-color: var(--color-defect);
+  --card-border: var(--color-defect);
+  --card-glow: rgba(157, 78, 221, 0.4);
+}
+
+.character-roll-card[data-suit="Copas"] {  --suit-color: var(--suit-copas);
+}
+
+.character-roll-card[data-suit="Ouro"] {
+  --suit-color: var(--suit-ouros);
+  --card-glow: rgba(201, 162, 39, 0.35);
+}
+
+.character-roll-card[data-suit="Paus"] {
+  --suit-color: var(--suit-paus);
+  --card-glow: rgba(27, 127, 90, 0.35);
+}
+
+.character-roll-card[data-suit="Espadas"] {
+  --suit-color: var(--suit-espadas);
+  --card-glow: rgba(61, 90, 128, 0.35);
+}
+
+.character-roll-card[data-outcome="success"],
+.character-roll-card[data-outcome="critical-success"] {
+  --outcome-color: var(--color-form);
+}
+
+.character-roll-card[data-outcome="costly-success"] {
+  --outcome-color: var(--color-dream);
+}
+
+.character-roll-card[data-outcome="failure"],
+.character-roll-card[data-outcome="critical-failure"] {
+  --outcome-color: var(--color-logic);
+}
+
+.roll-card-header {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  gap: 0.55rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--card-color) 45%, transparent);
+}
+
+.suit-icon-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--suit-color);
+  opacity: 0.95;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--suit-color) 70%, transparent);
+}
+
+.roll-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.roll-attribute {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--card-color);
+  font-weight: 700;
+}
+
+.roll-outcome-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--outcome-color);
+  background: color-mix(in srgb, var(--outcome-color) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outcome-color) 45%, transparent);
+  border-radius: 999px;
+  padding: 0.22rem 0.65rem;
+  display: inline-flex;
+  align-self: center;
+  justify-content: center;
+}
+
+.roll-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.roll-result {
+  display: contents;
+}
+
+.roll-dice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.roll-dice-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.76);
+}
+
+.roll-dice-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.alice-die {
+  min-width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.alice-die--clean {
+  color: var(--color-form);
+  border-color: color-mix(in srgb, var(--color-form) 55%, transparent);
+  background: color-mix(in srgb, var(--color-form) 12%, transparent);
+}
+
+.alice-die--costly {
+  color: var(--color-dream);
+  border-color: color-mix(in srgb, var(--color-dream) 55%, transparent);
+  background: color-mix(in srgb, var(--color-dream) 12%, transparent);
+}
+
+.alice-die--miss {
+  color: var(--color-logic);
+  border-color: color-mix(in srgb, var(--color-logic) 55%, transparent);
+  background: color-mix(in srgb, var(--color-logic) 12%, transparent);
+}
+
+.alice-roll__details {
+  border-top: 1px solid color-mix(in srgb, var(--card-color) 35%, transparent);
+  padding-top: 0.45rem;
+  display: grid;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.alice-roll__details summary {
+  list-style: none;
+  cursor: pointer;
+  color: #f4f1ea;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.92;
+  user-select: none;
+}
+
+.alice-roll__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.alice-roll__details .alice-roll__details-body {
+  display: grid;
+  gap: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.2s ease;
+}
+
+.alice-roll__details[open] .alice-roll__details-body {
+  max-height: 220px;
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+
+.alice-roll__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.8);
+}
+
+.alice-roll__row strong {
+  font-size: 1rem;
+  color: var(--outcome-color);
+}
+
+.alice-roll__row--highlight {
+  background: color-mix(in srgb, var(--outcome-color) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outcome-color) 50%, transparent);
+  border-radius: 8px;
+  padding: 0.35rem 0.5rem;
+}

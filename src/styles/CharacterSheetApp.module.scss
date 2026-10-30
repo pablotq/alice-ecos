@@ -1,0 +1,550 @@
+@use "./variables";
+
+.sheet {
+  --bg-main: var(--theme-light-bg-main);
+  --bg-deep: var(--theme-light-bg-deep);
+  --card-bg: var(--theme-light-card-bg);
+  --card-border: var(--theme-light-card-border);
+  --text-main: var(--theme-light-text-main);
+  --text-muted: var(--theme-light-text-muted);
+  --accent-gold: var(--color-dream);
+  --shadow-card: var(--shadow-card);
+  --doodle-1: #ff5e2e;
+  --doodle-2: #00b691;
+  --doodle-3: #932df3;
+  --doodle-4: #ff284c;
+  --doodle-5: #0d64e7;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem 1rem 1.25rem;
+  min-height: 100%;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.55), transparent 28%),
+    radial-gradient(circle at 88% 8%, rgba(198, 162, 90, 0.22), transparent 32%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(58, 45, 39, 0.03) 18px,
+      rgba(58, 45, 39, 0.03) 19px
+    ),
+    var(--bg-main);
+  color: var(--text-main);
+  border: 3px solid var(--card-border);
+  border-radius: 14px;
+  font-family: var(--font-display);
+}
+
+.sheet[data-theme="dark"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 28% 68%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 63% 18%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 81% 44%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 48% 82%, rgba(255, 214, 102, 0.55), transparent),
+    radial-gradient(1px 1px at 91% 76%, rgba(157, 78, 221, 0.7), transparent);
+  z-index: 0;
+}
+
+.sheet[data-theme="dark"] {
+  --bg-main: var(--theme-dark-bg-main);
+  --bg-deep: var(--theme-dark-bg-deep);
+  --card-bg: var(--theme-dark-card-bg);
+  --card-border: var(--theme-dark-card-border);
+  --text-main: var(--theme-dark-text-main);
+  --text-muted: var(--theme-dark-text-muted);
+  --accent-gold: var(--color-dream);
+  --suit-copas: var(--color-logic);
+  --suit-ouros: var(--color-dream);
+  --suit-paus: var(--color-form);
+  --suit-espadas: var(--color-defect);
+  --shadow-card: var(--shadow-card-dark);
+  --doodle-1: #ff7ab6;
+  --doodle-2: #7dffb3;
+  --doodle-3: #7ad7ff;
+  --doodle-4: #ffe066;
+  --doodle-5: #c77dff;
+
+  background:
+    radial-gradient(circle at 18% 12%, rgba(157, 78, 221, 0.28), transparent 26%),
+    radial-gradient(circle at 82% 18%, rgba(0, 176, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(255, 42, 85, 0.12), transparent 38%),
+    linear-gradient(180deg, #12081d 0%, #07060e 55%, #140c22 100%);
+}
+
+.sheet[data-theme="dark"] .playingCard {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--suit) 40%, transparent), var(--shadow-card);
+}
+
+.banner,
+.identity,
+.table,
+.cardSlot,
+.summary,
+.chatRow,
+.notesField {
+  position: relative;
+  z-index: 1;
+}
+
+.decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.doodle {
+  position: absolute;
+  opacity: 0.55;
+}
+
+.sheet[data-theme="dark"] .doodle {
+  opacity: 0.78;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.doodleClock {
+  left: 1%;
+  top: 38%;
+  width: 88px;
+  color: var(--doodle-1);
+  transform: rotate(-12deg);
+}
+
+.doodleCup {
+  left: 6%;
+  top: 4%;
+  width: 92px;
+  color: var(--doodle-2);
+  transform: rotate(-8deg);
+}
+
+.doodleHat {
+  left: 42%;
+  top: 2%;
+  width: 86px;
+  color: var(--doodle-5);
+}
+
+.doodleGrin {
+  left: 34%;
+  bottom: 18%;
+  width: 170px;
+  color: var(--doodle-4);
+  opacity: 0.42;
+}
+
+.doodleBeast {
+  right: -2%;
+  top: 6%;
+  width: 150px;
+  color: var(--doodle-5);
+  opacity: 0.35;
+}
+
+.doodlePotions {
+  right: 2%;
+  bottom: 8%;
+  width: 120px;
+  color: var(--doodle-3);
+}
+
+.doodleGears {
+  left: 2%;
+  bottom: 24%;
+  width: 90px;
+  color: var(--doodle-2);
+  opacity: 0.4;
+}
+
+.doodleKey {
+  right: 28%;
+  top: 8%;
+  width: 70px;
+  color: var(--doodle-4);
+}
+
+.doodleCrystal {
+  left: 28%;
+  top: 36%;
+  width: 54px;
+  color: var(--doodle-3);
+}
+
+.doodleDice {
+  right: 22%;
+  bottom: 28%;
+  width: 48px;
+  color: var(--doodle-1);
+}
+
+.doodleMushroom {
+  right: 38%;
+  top: 4%;
+  width: 46px;
+  color: var(--doodle-2);
+}
+
+.banner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.15rem 0.2rem 0.35rem;
+}
+
+.bannerTitle {
+  text-align: center;
+}
+
+.bannerTitle h1 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: clamp(1.35rem, 3vw, 2.05rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.themePill {
+  border: 2px solid var(--card-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
+  color: var(--text-main);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.themePillActive {
+  background: var(--accent-gold);
+  color: #1a1208;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent-gold) 55%, transparent);
+}
+
+.identity {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.fieldLabel,
+.notesField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.fieldLabel input,
+.naipeField select,
+.points input,
+.notesField textarea,
+.chatRow input {
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  color: var(--text-main);
+  border: 1px solid color-mix(in srgb, var(--card-border) 70%, transparent);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 0.85rem;
+  padding: 0.6rem 0.2rem 0.2rem;
+}
+
+.cardSlot {
+  position: relative;
+  min-width: 0;
+  padding: 0.35rem 0.45rem 0.7rem;
+}
+
+.cardSlot::before,
+.cardSlot::after {
+  content: "";
+  position: absolute;
+  inset: 18px 14px 10px;
+  border-radius: 16px;
+  border: 2px solid color-mix(in srgb, var(--card-border) 55%, transparent);
+  background: color-mix(in srgb, var(--card-bg) 75%, #000 8%);
+  z-index: 0;
+}
+
+.cardSlot::before {
+  transform: rotate(-7deg);
+}
+
+.cardSlot::after {
+  transform: rotate(6.5deg);
+}
+
+.cardSlot--form .playingCard {
+  transform: rotate(-3.2deg);
+}
+
+.cardSlot--logic .playingCard {
+  transform: rotate(1.2deg) translateY(-10px);
+}
+
+.cardSlot--dream .playingCard {
+  transform: rotate(3.8deg);
+}
+
+.cardSlot--defect .playingCard {
+  transform: rotate(-1.4deg);
+  max-width: 360px;
+  min-height: 280px;
+  margin: 0 auto;
+}
+
+.playingCard:hover,
+.playingCard:focus-within {
+  transform: translateY(-8px) rotate(0deg);
+  z-index: 4;
+}
+
+.playingCard {
+  --suit: var(--accent-gold);
+  position: relative;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--suit) 16%, transparent), transparent 36%),
+    var(--card-bg);
+  border: 2px solid var(--suit);
+  border-radius: 16px;
+  min-height: 430px;
+  padding: 1.35rem 0.85rem 0.9rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.playingCard::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid color-mix(in srgb, var(--suit) 55%, transparent);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.playingCard[data-suit="Copas"] { --suit: var(--suit-copas); }
+.playingCard[data-suit="Ouro"] { --suit: var(--suit-ouros); }
+.playingCard[data-suit="Paus"] { --suit: var(--suit-paus); }
+.playingCard[data-suit="Espadas"] { --suit: var(--suit-espadas); }
+
+.corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--suit);
+  z-index: 2;
+}
+
+.corner i {
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+.cornerTop {
+  top: 15px;
+  left: 20px;
+}
+
+.cardFace {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.heroSuit {
+  margin: 0.15rem 0 0;
+  text-align: center;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--suit);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--suit) 55%, transparent);
+}
+
+.cardFace h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--suit);
+}
+
+.cardFace h3 span {
+  margin-right: 0.2rem;
+}
+
+.points,
+.naipeField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-left: 1.125rem;
+}
+
+.points input,
+.naipeField select {
+  width: 108px;
+  text-align: center;
+}
+
+.integrity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.pips {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.pipOn,
+.pipOff {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border-radius: 3px;
+  border: 1.5px solid var(--suit);
+  cursor: pointer;
+  transform: rotate(45deg);
+  background: transparent;
+}
+
+.pipOn {
+  background: var(--suit);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--suit) 70%, transparent);
+}
+
+.defectHint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.rollButton,
+.sendButton {
+  margin-top: auto;
+  border: 1px solid var(--suit, var(--card-border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--suit, var(--accent-gold)) 18%, var(--card-bg));
+  color: var(--text-main);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.55rem 0.75rem;
+}
+
+.rollButton:hover,
+.sendButton:hover,
+.themePill:hover {
+  box-shadow: 0 0 16px color-mix(in srgb, var(--suit, var(--accent-gold)) 40%, transparent);
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.55rem 0.2rem;
+  border-top: 1px dashed color-mix(in srgb, var(--card-border) 55%, transparent);
+  border-bottom: 1px dashed color-mix(in srgb, var(--card-border) 55%, transparent);
+}
+
+.summaryOk {
+  color: var(--suit-paus);
+}
+
+.summaryBad {
+  color: var(--suit-copas);
+}
+
+.notesField textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.chatRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chatRow input {
+  flex: 1;
+}
+
+.sendButton {
+  margin-top: 0;
+  white-space: nowrap;
+  background: var(--accent-gold);
+  color: #1a1208;
+  border-color: var(--accent-gold);
+}
+
+@media (max-width: 860px) {
+  .table,
+  .identity {
+    grid-template-columns: 1fr;
+  }
+
+  .cardSlot--form .playingCard,
+  .cardSlot--logic .playingCard,
+  .cardSlot--dream .playingCard,
+  .cardSlot--defect .playingCard {
+    transform: none;
+  }
+
+  .banner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
