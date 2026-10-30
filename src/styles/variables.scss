@@ -1,0 +1,40 @@
+:global(:root) {
+  --font-display: Georgia, "Palatino Linotype", "Book Antiqua", serif;
+  --font-ui: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  --color-form: #00ff88;
+  --color-logic: #ff2a55;
+  --color-dream: #ffd166;
+  --color-defect: #9d4edd;
+
+  --theme-light-bg-main: #f3ead6;
+  --theme-light-bg-deep: #e7d7b8;
+  --theme-light-card-bg: #fff8ea;
+  --theme-light-card-border: #3a2d27;
+  --theme-light-text-main: #2b1e18;
+  --theme-light-text-muted: #6b5c54;
+
+  --theme-dark-bg-main: #07060e;
+  --theme-dark-bg-deep: #140c22;
+  --theme-dark-card-bg: #120c1c;
+  --theme-dark-card-border: #7b3fbf;
+  --theme-dark-text-main: #f4f1ea;
+  --theme-dark-text-muted: #b7bad6;
+
+  --suit-copas: #c1121f;
+  --suit-ouros: #c9a227;
+  --suit-paus: #1b7f5a;
+  --suit-espadas: #3d5a80;
+
+  --shadow-card: 0 14px 28px rgba(40, 24, 12, 0.22);
+  --shadow-card-dark: 0 0 22px rgba(157, 78, 221, 0.28);
+
+  --roll-ink: #f4f1ea;
+  --roll-muted: #b7bad6;
+  --roll-bg: #120c1c;
+  --roll-border: #7b3fbf;
+  --roll-clean: var(--color-form);
+  --roll-costly: var(--color-dream);
+  --roll-miss: #6d5f7a;
+  --roll-fail: var(--color-logic);
+}
