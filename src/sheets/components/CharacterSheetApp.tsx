@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import styles from "./CharacterSheetApp.module.scss";
 import { validateAliceAttributeSpread } from "./CharacterSheetApp.logic";
 import { CardSlot } from "../../types/cardSlot";
+import { AttributeKey } from "../../types/atributeKey";
 import { localize } from "../../i18n";
+import { resolveRoll } from "../../logic/roll-rules";
+import { CharacterRollModal } from "./CharacterRollModal";
+import { buildCharacterRollChatHtml } from "./CharacterRoll";
 
 
 export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
@@ -11,6 +15,8 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
   const suits = system.suits;
   const integrity = system.integrity;
   const cards = system.cards ?? [];
+
+  const [activeRollKey, setActiveRollKey] = useState<AttributeKey | null>(null);
 
   const updateField = (path: string, value: string | number) => {
     actor.update({ system: { [path]: value } });
@@ -43,6 +49,11 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
     defeito: cards.filter((card) => card.slot === "defeito")
   };
 
+  const removeCard = (cardId: string) => {
+    const filteredCards = cards.filter((card: any) => card.id !== cardId);
+    actor.update({ system: { cards: filteredCards } });
+  };
+
   const slotTitles: Record<CardSlot, string> = {
     forma: "Forma",
     mente: "Mente",
@@ -55,6 +66,47 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
     logic: attrs.logic,
     dream: attrs.dream
   });
+
+  const attributeLabels: Record<AttributeKey, string> = {
+    form: "Forma",
+    logic: "Lógica",
+    dream: "Devaneio"
+  };
+
+  const openRollModal = (key: AttributeKey) => {
+    setActiveRollKey(key);
+  };
+
+  const handleRollConfirm = async (key: AttributeKey, bonus: number, difficulty: number) => {
+    const attributeValue = attrs[key];
+    const integrityValue = integrity[key];
+
+    const result = await resolveRoll({
+      attributeValue,
+      bonus,
+      integrity: integrityValue,
+      difficulty
+    });
+
+    const label = attributeLabels[key];
+    const resultText = buildCharacterRollChatHtml({
+      attributeLabel: label,
+      outcome: result.outcome,
+      results: result.results,
+      diceCount: result.diceCount,
+      difficulty: result.difficulty,
+      cleanSuccess: result.cleanSuccess,
+      costlySuccess: result.costlySuccess,
+      totalSuccess: result.totalSuccess
+    });
+
+    await result.roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor: resultText
+    });
+
+    setActiveRollKey(null);
+  };
 
   // chat que é do boilerplate, mas não é usado no momento. Mantido para referência futura.
   const [chatMessage, setChatMessage] = useState("");
@@ -93,7 +145,7 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
       <div className={styles.attributes}>
         {(["form", "logic", "dream"] as const).map((key) => (
           <div key={key} className={styles.attributeBlock}>
-            <h3>{key}</h3>
+            <h3>{attributeLabels[key]}</h3>
 
             <label>
               Valor
@@ -137,13 +189,18 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
                 }
               />
             </label>
+
+            <button type="button" onClick={() => openRollModal(key)}>
+              Rolar {attributeLabels[key]}
+            </button>
           </div>
         ))}
       </div>
 
       <div className={styles.cardGrid}>
         {(Object.keys(cardsBySlot) as CardSlot[]).map((slot) => (
-          <div key={slot}
+          <div
+            key={slot}
             className={styles.cardColumn}
             data-card-slot={slot}
             onDragOver={(event) => event.preventDefault()}
@@ -151,12 +208,24 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
             <h3>{slotTitles[slot]}</h3>
 
             {cardsBySlot[slot].length === 0 ? (
-              <p> Arraste uma carta aqui</p>
+              <p>Arraste uma carta aqui</p>
             ) : (
               cardsBySlot[slot].map((card: any) => (
                 <div key={card.id} className={styles.cardItem}>
-                  <strong>{card.name}</strong>
-                  <small>{card.suit} · {card.category}</small>
+                  <div className={styles.cardHeader}>
+                    <div>
+                      <strong>{card.name}</strong>
+                      <small>{card.suit} · {card.category}</small>
+                    </div>
+                    <button
+                      type="button"
+                      className={styles.removeCardButton}
+                      onClick={() => removeCard(card.id)}
+                      aria-label={`Excluir carta ${card.name}`}
+                    >
+                      X
+                    </button>
+                  </div>
                   <p>{card.description}</p>
                   <p>{card.effect}</p>
                 </div>
@@ -170,7 +239,11 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
         <span>
           Distribuição: {attrs.form} / {attrs.logic} / {attrs.dream}
         </span>
-        <span>{validSpread ? "Distribuição válida (6 pontos)" : "Distribuição inválida (total deve ser 6)"}</span>
+        <span>
+          {validSpread
+            ? "Distribuição válida (6 pontos)"
+            : "Distribuição inválida (total deve ser 6)"}
+        </span>
       </div>
 
       <label>
@@ -193,6 +266,18 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
           {localize("BOILERPLATE.Sheet.SendToChat")}
         </button>
       </div>
+
+      {activeRollKey && (
+        <CharacterRollModal
+          isOpen={activeRollKey !== null}
+          attributeKey={activeRollKey}
+          attributeLabel={attributeLabels[activeRollKey]}
+          onConfirm={async (bonus, difficulty) => {
+            await handleRollConfirm(activeRollKey, bonus, difficulty);
+          }}
+          onClose={() => setActiveRollKey(null)}
+        />
+      )}
     </div>
   );
 }
