@@ -52,12 +52,25 @@ export class CharacterSheet extends foundry.applications.sheets.ActorSheetV2 {
 
     const target = event.target as HTMLElement | null;
     const slotElement = target?.closest("[data-card-slot]");
-    const slot = (slotElement?.getAttribute("data-card-slot") as CardSlot | null) ?? "forma";
+    const requestedSlot = (slotElement?.getAttribute("data-card-slot") as CardSlot | null) ?? null;
+
+    const categoryToSlot: Record<string, CardSlot> = {
+      Forma: "forma",
+      Mente: "mente",
+      Devaneio: "devaneio",
+      Defeito: "defeito"
+    };
+
+    const validSlot = categoryToSlot[itemAny.system?.category ?? ""] ?? null;
+
+    if (!validSlot || !requestedSlot || requestedSlot !== validSlot) {
+      return;
+    }
 
     const currentCards = ((this.actor.system.cards ?? []) as any[]);
 
     const alreadyAdded = currentCards.some(
-      (card: any) => card.uuid === itemAny.uuid && card.slot === slot
+      (card: any) => card.uuid === itemAny.uuid && card.slot === validSlot
     );
 
     if (alreadyAdded) {
@@ -70,7 +83,7 @@ export class CharacterSheet extends foundry.applications.sheets.ActorSheetV2 {
       name: itemAny.name,
       suit: itemAny.system?.suit,
       category: itemAny.system?.category,
-      slot,
+      slot: validSlot,
       description: itemAny.system?.description,
       effect: itemAny.system?.effect,
       notes: itemAny.system?.notes ?? ""
