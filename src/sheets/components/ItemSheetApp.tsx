@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ItemSheetApp.module.scss";
+import styles from "../../styles/ItemSheetApp.module.scss";
 import { localize } from "../../i18n";
 
 export function ItemSheetApp({ item }: { item: Item.Implementation }) {
@@ -57,13 +57,13 @@ export function ItemSheetApp({ item }: { item: Item.Implementation }) {
           <label className={styles.label}>
             Slot
             <select
-              value={system.slot ?? "forma"}
+              value={system.slot ?? "form"}
               onChange={(e) => updateField("slot", e.target.value)}
             >
-              <option value="forma">Forma</option>
-              <option value="mente">Mente</option>
-              <option value="devaneio">Devaneio</option>
-              <option value="defeito">Defeito</option>
+              <option value="form">Form</option>
+              <option value="logic">Logic</option>
+              <option value="dream">Dream</option>
+              <option value="defect">Defect</option>
             </select>
           </label>
 

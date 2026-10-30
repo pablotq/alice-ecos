@@ -1,22 +1,53 @@
-import React, { useState } from "react";
-import styles from "./CharacterSheetApp.module.scss";
+import React, { useEffect, useState } from "react";
+import styles from "../../styles/CharacterSheetApp.module.scss";
 import { validateAliceAttributeSpread } from "./CharacterSheetApp.logic";
-import { CardSlot } from "../../types/cardSlot";
 import { AttributeKey } from "../../types/atributeKey";
 import { localize } from "../../i18n";
 import { resolveRoll } from "../../logic/roll-rules";
-import { CharacterRollModal } from "./CharacterRollModal";
+import { ModalRoll } from "./ModalRoll";
 import { buildCharacterRollChatHtml } from "./CharacterRoll";
+import { CardGrid } from "./CardGrid";
+import { WonderlandDecor } from "./WonderlandDecor";
 
+const SUIT_GLYPH: Record<string, string> = {
+  Copas: "♥",
+  Ouro: "♦",
+  Paus: "♣",
+  Espadas: "♠"
+};
+
+const ATTRIBUTE_KEYS = ["form", "logic", "dream"] as const;
+const DEFAULT_SUITS: Record<string, string> = {
+  form: "Copas",
+  logic: "Ouro",
+  dream: "Paus",
+  defect: "Espadas"
+};
 
 export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
   const system = actor.system;
   const attrs = system.attributes;
   const suits = system.suits;
   const integrity = system.integrity;
-  const cards = system.cards ?? [];
+  const cards = (system.cards ?? []) as any[];
 
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    try {
+      return localStorage.getItem("ecos-alice-theme") === "dark" ? "dark" : "light";
+    } catch {
+      return "light";
+    }
+  });
   const [activeRollKey, setActiveRollKey] = useState<AttributeKey | null>(null);
+  const [chatMessage, setChatMessage] = useState("");
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("ecos-alice-theme", theme);
+    } catch {
+      /* ignore */
+    }
+  }, [theme]);
 
   const updateField = (path: string, value: string | number) => {
     actor.update({ system: { [path]: value } });
@@ -40,13 +71,16 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
         }
       }
     });
-  }
+  };
 
-  const cardsBySlot: Record<CardSlot, any[]> = {
-    forma: cards.filter((card) => card.slot === "forma"),
-    mente: cards.filter((card) => card.slot === "mente"),
-    devaneio: cards.filter((card) => card.slot === "devaneio"),
-    defeito: cards.filter((card) => card.slot === "defeito")
+  const updateIntegrity = (key: "form" | "logic" | "dream", value: number) => {
+    actor.update({
+      system: {
+        integrity: {
+          [key]: value
+        }
+      }
+    });
   };
 
   const removeCard = (cardId: string) => {
@@ -54,18 +88,14 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
     actor.update({ system: { cards: filteredCards } });
   };
 
-  const slotTitles: Record<CardSlot, string> = {
-    forma: "Forma",
-    mente: "Mente",
-    devaneio: "Devaneio",
-    defeito: "Defeito"
-  };
-
   const validSpread = validateAliceAttributeSpread({
     form: attrs.form,
     logic: attrs.logic,
     dream: attrs.dream
   });
+  const resolveSuit = (key: string) => String(suits?.[key] ?? DEFAULT_SUITS[key] ?? "Copas");
+  const defectSuit = String(cards.find((card) => card?.slot === "defect")?.suit ?? resolveSuit("defect"));
+  const defectGlyph = SUIT_GLYPH[defectSuit] ?? "♠";
 
   const attributeLabels: Record<AttributeKey, string> = {
     form: "Forma",
@@ -91,6 +121,8 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
     const label = attributeLabels[key];
     const resultText = buildCharacterRollChatHtml({
       attributeLabel: label,
+      attributeKey: key,
+      suit: suits[key],
       outcome: result.outcome,
       results: result.results,
       diceCount: result.diceCount,
@@ -100,16 +132,16 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
       totalSuccess: result.totalSuccess
     });
 
-    await result.roll.toMessage({
+    await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: resultText
+      content: resultText,
+      rolls: [result.roll],
+      sound: CONFIG.sounds.dice
     });
 
     setActiveRollKey(null);
   };
 
-  // chat que é do boilerplate, mas não é usado no momento. Mantido para referência futura.
-  const [chatMessage, setChatMessage] = useState("");
   const sendChatMessage = () => {
     if (!chatMessage.trim()) return;
     ChatMessage.create({
@@ -120,11 +152,24 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
   };
 
   return (
-    <div className={styles.sheet}>
-      <h1>{actor.name}</h1>
+    <div className={styles.sheet} data-theme={theme}>
+      <WonderlandDecor />
 
-      <div className={styles.fieldGroup}>
-        <label>
+      <header className={styles.banner}>
+        <div className={styles.bannerTitle}>
+          <h1>Alice: E.C.O.S</h1>
+        </div>
+        <button
+          type="button"
+          className={`${styles.themePill} ${theme === "dark" ? styles.themePillActive : ""}`}
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+        </button>
+      </header>
+
+      <div className={styles.identity}>
+        <label className={styles.fieldLabel}>
           Alice
           <input
             type="text"
@@ -132,7 +177,7 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
             onChange={(e) => updateField("alice", e.target.value)}
           />
         </label>
-        <label>
+        <label className={styles.fieldLabel}>
           Vivência
           <input
             type="text"
@@ -142,116 +187,102 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
         </label>
       </div>
 
-      <div className={styles.attributes}>
-        {(["form", "logic", "dream"] as const).map((key) => (
-          <div key={key} className={styles.attributeBlock}>
-            <h3>{attributeLabels[key]}</h3>
+      <div className={styles.table}>
+        {ATTRIBUTE_KEYS.map((key) => {
+          const suit = resolveSuit(key);
+          const glyph = SUIT_GLYPH[suit] ?? "♥";
+          const rank = String(attrs[key] ?? 1);
 
-            <label>
-              Valor
-              <input
-                type="number"
-                min={1}
-                max={4}
-                value={attrs[key]}
-                onChange={(e) => updateAttribute(key, Number(e.target.value))}
-              />
-            </label>
+          return (
+            <div key={key} className={`${styles.cardSlot} ${styles[`cardSlot--${key}`]}`}>
+              <article className={styles.playingCard} data-suit={suit} data-attr={key}>
+                <span className={`${styles.corner} ${styles.cornerTop}`}>
+                  {rank}
+                  <i>{glyph}</i>
+                </span>
 
-            <label>
-              Naipe
-              <select
-                value={suits[key]}
-                onChange={(e) => updateSuit(key, e.target.value)}
-              >
-                <option value="Copas">Copas</option>
-                <option value="Ouro">Ouro</option>
-                <option value="Paus">Paus</option>
-                <option value="Espadas">Espadas</option>
-              </select>
-            </label>
+                <div className={styles.cardFace}>
+                  <p className={styles.heroSuit}>{glyph}</p>
+                  <h3>
+                    {attributeLabels[key]}
+                  </h3>
 
-            <label>
-              Integridade
-              <input
-                type="number"
-                min={0}
-                max={3}
-                value={integrity[key]}
-                onChange={(e) =>
-                  actor.update({
-                    system: {
-                      integrity: {
-                        [key]: Number(e.target.value)
-                      }
-                    }
-                  })
-                }
-              />
-            </label>
+                  <label className={styles.points}>
+                    Pontos
+                    <input
+                      type="number"
+                      min={1}
+                      max={4}
+                      value={attrs[key]}
+                      onChange={(e) => updateAttribute(key, Number(e.target.value))}
+                    />
+                  </label>
 
-            <button type="button" onClick={() => openRollModal(key)}>
-              Rolar {attributeLabels[key]}
-            </button>
-          </div>
-        ))}
+                  <label className={styles.naipeField}>
+                    Naipe
+                    <select value={suit} onChange={(e) => updateSuit(key, e.target.value)}>
+                      <option value="Copas">Copas ♥</option>
+                      <option value="Ouro">Ouro ♦</option>
+                      <option value="Paus">Paus ♣</option>
+                      <option value="Espadas">Espadas ♠</option>
+                    </select>
+                  </label>
+
+                  <CardGrid cards={cards} slot={key} onRemoveCard={removeCard} title="Assinatura" />
+
+                  <div className={styles.integrity}>
+                    <span>Integridade</span>
+                    <div className={styles.pips}>
+                      {[1, 2, 3].map((pip) => (
+                        <button
+                          key={pip}
+                          type="button"
+                          className={pip <= integrity[key] ? styles.pipOn : styles.pipOff}
+                          onClick={() => updateIntegrity(key, pip === integrity[key] ? pip - 1 : pip)}
+                          aria-label={`Integridade ${pip}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <button type="button" className={styles.rollButton} onClick={() => openRollModal(key)}>
+                    Rolar {attributeLabels[key]}
+                  </button>
+                </div>
+              </article>
+            </div>
+          );
+        })}
       </div>
 
-      <div className={styles.cardGrid}>
-        {(Object.keys(cardsBySlot) as CardSlot[]).map((slot) => (
-          <div
-            key={slot}
-            className={styles.cardColumn}
-            data-card-slot={slot}
-            onDragOver={(event) => event.preventDefault()}
-          >
-            <h3>{slotTitles[slot]}</h3>
-
-            {cardsBySlot[slot].length === 0 ? (
-              <p>Arraste uma carta aqui</p>
-            ) : (
-              cardsBySlot[slot].map((card: any) => (
-                <div key={card.id} className={styles.cardItem}>
-                  <div className={styles.cardHeader}>
-                    <div>
-                      <strong>{card.name}</strong>
-                      <small>{card.suit} · {card.category}</small>
-                    </div>
-                    <button
-                      type="button"
-                      className={styles.removeCardButton}
-                      onClick={() => removeCard(card.id)}
-                      aria-label={`Excluir carta ${card.name}`}
-                    >
-                      X
-                    </button>
-                  </div>
-                  <p>{card.description}</p>
-                  <p>{card.effect}</p>
-                </div>
-              ))
-            )}
+      <div className={`${styles.cardSlot} ${styles["cardSlot--defect"]}`}>
+        <article className={styles.playingCard} data-suit={defectSuit} data-attr="defect">
+          <span className={`${styles.corner} ${styles.cornerTop}`}>
+            <i>{defectGlyph}</i>
+          </span>
+          <div className={styles.cardFace}>
+            <p className={styles.heroSuit}>{defectGlyph}</p>
+            <h3>
+              <span>{defectGlyph}</span> O Custo do Sonho
+            </h3>
+            <p className={styles.defectHint}>Defeito · Ruptura</p>
+            <CardGrid cards={cards} slot="defect" onRemoveCard={removeCard} title="Conceitos" />
           </div>
-        ))}
+        </article>
       </div>
 
       <div className={styles.summary}>
         <span>
           Distribuição: {attrs.form} / {attrs.logic} / {attrs.dream}
         </span>
-        <span>
-          {validSpread
-            ? "Distribuição válida (6 pontos)"
-            : "Distribuição inválida (total deve ser 6)"}
+        <span className={validSpread ? styles.summaryOk : styles.summaryBad}>
+          {validSpread ? "Distribuição válida (6 pontos)" : "Distribuição inválida (total deve ser 6)"}
         </span>
       </div>
 
-      <label>
-        Notas
-        <textarea
-          value={system.notes ?? ""}
-          onChange={(e) => updateField("notes", e.target.value)}
-        />
+      <label className={styles.notesField}>
+        <span>Notas</span>
+        <textarea value={system.notes ?? ""} onChange={(e) => updateField("notes", e.target.value)} />
       </label>
 
       <div className={styles.chatRow}>
@@ -262,16 +293,17 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
           onChange={(e) => setChatMessage(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
         />
-        <button type="button" onClick={sendChatMessage}>
+        <button type="button" className={styles.sendButton} onClick={sendChatMessage}>
           {localize("BOILERPLATE.Sheet.SendToChat")}
         </button>
       </div>
 
       {activeRollKey && (
-        <CharacterRollModal
+        <ModalRoll
           isOpen={activeRollKey !== null}
           attributeKey={activeRollKey}
           attributeLabel={attributeLabels[activeRollKey]}
+          suit={suits[activeRollKey]}
           onConfirm={async (bonus, difficulty) => {
             await handleRollConfirm(activeRollKey, bonus, difficulty);
           }}
