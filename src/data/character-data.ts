@@ -56,6 +56,12 @@ function defineSchema() {
         nullable: false,
         initial: "Paus",
         choices: ["Copas", "Ouro", "Paus", "Espadas"]
+      }),
+      defect: new fields.StringField({
+        required: true,
+        nullable: false,
+        initial: "Espadas",
+        choices: ["Copas", "Ouro", "Paus", "Espadas"]
       })
     }),
     integrity: new fields.SchemaField({
@@ -116,8 +122,8 @@ function defineSchema() {
         slot: new fields.StringField({
           required: true, 
           nullable: false,
-          initial: "forma",
-          choices: ["forma", "mente", "devaneio", "defeito"]
+          initial: "form",
+          choices: ["form", "logic", "dream", "defect"]
         }),
         description: new fields.StringField({
           required: true, 

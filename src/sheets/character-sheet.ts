@@ -10,7 +10,7 @@ export class CharacterSheet extends foundry.applications.sheets.ActorSheetV2 {
     window: {
       resizable: true
     },
-    position: { width: 700, height: 520 }
+    position: { width: 980, height: 820 }
   };
 
   #root: Root | null = null;
@@ -55,10 +55,10 @@ export class CharacterSheet extends foundry.applications.sheets.ActorSheetV2 {
     const requestedSlot = (slotElement?.getAttribute("data-card-slot") as CardSlot | null) ?? null;
 
     const categoryToSlot: Record<string, CardSlot> = {
-      Forma: "forma",
-      Mente: "mente",
-      Devaneio: "devaneio",
-      Defeito: "defeito"
+      Forma: "form",
+      Mente: "logic",
+      Devaneio: "dream",
+      Defeito: "defect"
     };
 
     const validSlot = categoryToSlot[itemAny.system?.category ?? ""] ?? null;
