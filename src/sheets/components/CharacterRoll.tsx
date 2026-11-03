@@ -5,11 +5,10 @@ export type CharacterRollOutcomeMeta = {
   label: string;
 };
 
-const SUIT_GLYPH: Record<string, string> = {
-  Copas: "♥",
-  Ouro: "♦",
-  Paus: "♣",
-  Espadas: "♠"
+const ATTRIBUTE_ICONS: Record<string, string> = {
+  form: '<i class="fa-solid fa-bicep" aria-hidden="true"></i>',
+  logic: '<i class="fa-solid fa-head-side-brain" aria-hidden="true"></i>',
+  dream: '<i class="fa-solid fa-stars" aria-hidden="true"></i>'
 };
 
 const OUTCOME_META: Record<string, CharacterRollOutcomeMeta> = {
@@ -62,22 +61,22 @@ export function buildCharacterRollChatHtml({
   const meta = getCharacterRollOutcomeMeta(outcome);
   const attr = escapeHtml(attributeLabel);
   const attrKey = attributeKey ?? "logic";
-  const suitGlyph = SUIT_GLYPH[suit ?? ""] ?? "♠";
+  const attributeIcon = ATTRIBUTE_ICONS[attrKey] ?? ATTRIBUTE_ICONS.logic;
   const badges = results.map(dieBadgeHtml).join(" ");
 
   return `
     <div
       class="character-roll-card"
       data-attr="${attrKey}"
-      data-suit="${escapeHtml(suit ?? "Copas")}"
+      data-suit="${escapeHtml(suit ?? "Copas")}" 
       data-outcome="${escapeHtml(outcome)}"
     >
       <div class="roll-card-header">
-        <span class="suit-icon-corner">${suitGlyph}</span>
+        <span class="icon-corner">${attributeIcon}</span>
         <div class="roll-title-group">
           <span class="roll-attribute">TESTE DE ${attr}</span>
         </div>
-        <span class="suit-icon-corner">${suitGlyph}</span>
+        <span class="icon-corner icon-corner-mirror">${attributeIcon}</span>
       </div>
 
       <div class="roll-card-body">
