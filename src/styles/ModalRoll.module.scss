@@ -11,11 +11,18 @@
 }
 
 .modal {
+  --modal-surface: var(--theme-light-card-bg);
+  --modal-surface-strong: var(--theme-light-bg-deep);
+  --modal-text: var(--theme-light-text-main);
+  --modal-muted: var(--theme-light-text-muted);
+  --modal-input-bg: rgba(255, 255, 255, 0.48);
+  --modal-input-border: var(--theme-light-card-border);
+  --modal-button-text: var(--theme-light-text-main);
   --roll-accent: var(--color-dream);
   background:
     radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--roll-accent) 18%, transparent), transparent 42%),
-    var(--theme-dark-card-bg);
-  color: var(--theme-dark-text-main);
+    var(--modal-surface);
+  color: var(--modal-text);
   border: 2px solid var(--roll-accent);
   border-radius: 16px;
   padding: 1.1rem 1.15rem;
@@ -25,6 +32,19 @@
   gap: 0.75rem;
   box-shadow: 0 0 28px color-mix(in srgb, var(--roll-accent) 35%, transparent);
   font-family: var(--font-display);
+}
+
+.modal[data-theme="dark"] {
+  --modal-surface: var(--theme-dark-card-bg);
+  --modal-surface-strong: var(--theme-dark-bg-deep);
+  --modal-text: var(--theme-dark-text-main);
+  --modal-muted: var(--theme-dark-text-muted);
+  --modal-input-bg: rgba(17, 11, 26, 0.9);
+  --modal-input-border: var(--theme-dark-card-border);
+  --modal-button-text: var(--theme-dark-text-main);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--roll-accent) 18%, transparent), transparent 42%),
+    var(--modal-surface);
 }
 
 .modal[data-suit="Copas"] {
@@ -49,7 +69,7 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-size: 0.68rem;
-  color: #b7bad6;
+  color: var(--modal-muted);
 }
 
 .modal h3 {
@@ -70,9 +90,9 @@
 }
 
 .field input {
-  background: #1b1428;
-  color: #f4f1ea;
-  border: 1px solid #7b3fbf;
+  background: var(--modal-input-bg);
+  color: var(--modal-text);
+  border: 1px solid var(--modal-input-border);
   border-radius: 8px;
   padding: 0.45rem 0.6rem;
 }
@@ -87,7 +107,7 @@
   border-radius: 999px;
   border: 1px solid var(--roll-accent);
   background: transparent;
-  color: #f4f1ea;
+  color: var(--modal-button-text);
   padding: 0.4rem 0.8rem;
   cursor: pointer;
 }

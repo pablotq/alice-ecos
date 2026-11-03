@@ -7,6 +7,7 @@ type ModalRollProps = {
   attributeKey: AttributeKey;
   attributeLabel: string;
   suit?: string;
+  theme?: "light" | "dark";
   onConfirm: (bonus: number, difficulty: number) => void | Promise<void>;
   onClose: () => void;
 };
@@ -16,6 +17,7 @@ export function ModalRoll({
   attributeKey,
   attributeLabel,
   suit,
+  theme = "dark",
   onConfirm,
   onClose,
 }: ModalRollProps) {
@@ -42,7 +44,12 @@ export function ModalRoll({
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.modal} data-attr={attributeKey} data-suit={suit ?? "Copas"}>
+      <div
+        className={styles.modal}
+        data-theme={theme}
+        data-attr={attributeKey}
+        data-suit={suit ?? "Copas"}
+      >
         <p className={styles.kicker}>Teste de</p>
         <h3>{attributeLabel}</h3>
 

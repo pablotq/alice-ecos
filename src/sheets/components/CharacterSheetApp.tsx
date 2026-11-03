@@ -304,6 +304,7 @@ export function CharacterSheetApp({ actor }: { actor: Actor.Implementation }) {
           attributeKey={activeRollKey}
           attributeLabel={attributeLabels[activeRollKey]}
           suit={suits[activeRollKey]}
+          theme={theme}
           onConfirm={async (bonus, difficulty) => {
             await handleRollConfirm(activeRollKey, bonus, difficulty);
           }}
