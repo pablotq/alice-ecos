@@ -50,7 +50,8 @@
   --card-glow: rgba(157, 78, 221, 0.4);
 }
 
-.character-roll-card[data-suit="Copas"] {  --suit-color: var(--suit-copas);
+.character-roll-card[data-suit="Copas"] {
+  --suit-color: var(--suit-copas);
 }
 
 .character-roll-card[data-suit="Ouro"] {
@@ -91,14 +92,19 @@
   border-bottom: 1px solid color-mix(in srgb, var(--card-color) 45%, transparent);
 }
 
-.suit-icon-corner {
+.icon-corner {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: var(--suit-color);
+  color: var(--card-color);
   opacity: 0.95;
-  text-shadow: 0 0 12px color-mix(in srgb, var(--suit-color) 70%, transparent);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--card-color) 70%, transparent);
+}
+
+.icon-corner-mirror {
+  transform: scaleX(-1);
+  transform-origin: center;
 }
 
 .roll-title-group {
