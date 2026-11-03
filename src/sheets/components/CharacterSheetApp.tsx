@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/CharacterSheetApp.module.scss";
-import { validateAliceAttributeSpread } from "./CharacterSheetApp.logic";
+import { validateAliceAttributeSpread } from "../../logic/CharacterSheetApp.logic";
 import { AttributeKey } from "../../types/atributeKey";
 import { localize } from "../../i18n";
 import { resolveRoll } from "../../logic/roll-rules";

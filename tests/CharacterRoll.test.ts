@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCharacterRollChatHtml, getCharacterRollOutcomeMeta } from "./CharacterRoll";
+import { buildCharacterRollChatHtml, getCharacterRollOutcomeMeta } from "../src/sheets/components/CharacterRoll";
 
 describe("buildCharacterRollChatHtml", () => {
   it("shows attribute, dice and outcome, with successes inside the expandable block", () => {
